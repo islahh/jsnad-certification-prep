@@ -31,6 +31,7 @@ This repository contains summaries of each topic I've studied for the JSNAD cert
 
 - Reference: https://www.max-gherman.dev/blog/2021/02/07/jsnad-certification/
   - You can use Node.js documentation during the exam, but your proctor might not know that. Ask the proctor for the ability to use the docs and show them this page in case they say "No".
+    - https://docs.linuxfoundation.org/tc-docs/certification/certification-resources-allowed#openjs-node-js-application-developer-jsnad-and-openjs-node-js-services-developer-jsnsd
   - Run your code on the terminal before submitting, at least check the syntax with `node -c answer.js`.
 - Reference: https://komelin.com/blog/nodejs-certification-my-experience-advice
   - Every task folder has a README file with the task description. Don't waste your time on reading it in the browser (save time).
