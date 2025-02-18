@@ -134,11 +134,3 @@ if (require.main === module) {
   import { validator } from "./validator.js";
   validator.test();
   ```
-
-## Resolving a Module Path in CJS
-
--
-
-## olving a Module Path in ESM
-
--
