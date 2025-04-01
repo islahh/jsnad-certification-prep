@@ -4,7 +4,8 @@ https://developer.mozilla.org/en-US/docs/Web/API/AbortController
 
 # Asynchronous Control Flow
 
-- I/O operations are **handled concurrently** in the libuv thread pool. But they may **appear as parallel execution** to the developer due to the unpredictability of the completion order.
+- I/O operations are **handled asynchronously** in the libuv thread pool. But they may **appear as parallel execution** to the developer due to the unpredictability of the completion order.
+  - Asynchronously means that it's handled "in background" without blocking the main thread, it's handled on a different thread.
 - It uses a **single-threaded event loop** to **process asynchronous tasks** and **manage non-blocking I/O** operations.
 
 ## Callbacks

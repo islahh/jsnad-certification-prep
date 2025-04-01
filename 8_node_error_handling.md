@@ -22,7 +22,7 @@ https://medium.com/better-programming/try-catch-considered-harmful-4238ddd7cd3c
 
 ### Developer errors:
 
-- Invalid input is one example of developer error.
+- Invalid type *(sending wrong var type for a function)* is one example of developer error.
 - **Recovery strategy**: In the case of a developer error the program should not attempt to continue running and should instead crash with a helpful description so that the developer can address their mistake.
 
 ## Throwing
