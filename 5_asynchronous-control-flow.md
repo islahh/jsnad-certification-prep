@@ -26,7 +26,7 @@ const print = (err, contents) => {
   console.log(contents.toString());
 };
 
-// Parallel Execution (it runs concurrently in the background on the libuv thread pool.
+// "Parallel Execution" (it runs concurrently in the background on the libuv thread pool.
 // It looks parallel because these tasks run independently, and the order of completion is unpredictable.
 // In this case, the smallest file is likely to return first.)
 readFile(bigFile, print);
@@ -57,7 +57,7 @@ const print = (contents) => {
   console.log(contents.toString());
 };
 
-// Parallel Execution (it runs concurrently in the background on the libuv thread pool, but looks parallel on js)
+// "Parallel Execution" (it runs concurrently in the background on the libuv thread pool, but looks parallel on js)
 const files = [bigFile, mediumFile, smallFile]
 const readersPromises = files.map((file) => readFile(file))
 Promise.all(readersPromises)
@@ -89,7 +89,7 @@ const print = (contents) => {
   console.log(contents.toString());
 };
 
-// Parallel Execution (concurrently behind the scenes as I mentioned before)
+// "Parallel Execution" (concurrently behind the scenes as I mentioned before)
 const files = [bigFile, mediumFile, smallFile];
 const readersPromises = files.map((file) => readFile(file));
 async function testParallel() {

@@ -1,4 +1,4 @@
-This repository contains summaries of each topic I've studied for the JSNAD certification.
+This repository contains summaries of each topic I've studied for the JSNAD certification. Following the docs and the course offered by Linux Foundation, with my understanding.
 
 ## Contents:
 
