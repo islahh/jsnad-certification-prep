@@ -26,7 +26,6 @@ https://nodejs.org/dist/latest-v22.x/docs/api/stream.html
 
 - The only method the stream implements is the `pipe` - others are inherithed from the EventEmitter.
   - `node -p "stream.prototype"` // EventEmitter { pipe: [Function (anonymous)], eventNames: [Function: eventNames] }
-  # Node.js Stream Types and Events
 
 ## Types
 

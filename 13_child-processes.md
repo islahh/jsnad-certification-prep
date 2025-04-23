@@ -229,6 +229,9 @@ if (IS_CHILD) {
 
 - This allows us to **control** the input, output, and error **streams** of the **child process**, such as inheriting the parent's STDOUT or ignoring STDERR.
 - We need to do a `sp.stind.end()`
+- `pipe`: **Redirects** the child's output/input to a stream you can **access from the parent** (e.g., for reading or writing).
+- `inherit`: **Shares** the **parent's stdio** (stdin, stdout, stderr) **with the child process** (same terminal).
+- `ignore`: **Disables** the **stdio stream for the child process**; it **won’t read or write anything**.
 
 ```javascript
 const { spawn } = require("child_process");

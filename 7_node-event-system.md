@@ -1,4 +1,4 @@
-https://nodejs.org/api/events.html
+https://nodejs.org/docs/latest-v22.x/api/events.html
 
 # Event system
 
