@@ -1,4 +1,4 @@
-This repository contains summaries of each topic I've studied for the JSNAD certification. Following the docs and the course offered by Linux Foundation, with my understanding.
+This repository contains summaries of each topic I've studied for the JSNAD certification.
 
 ## Contents:
 
@@ -8,7 +8,6 @@ This repository contains summaries of each topic I've studied for the JSNAD cert
 - https://nodeschool.io/
 - https://courses.dwf.dev/docs/javascript/jsnad-course-notes
 - https://trainingportal.linuxfoundation.org/courses/nodejs-application-development-lfw211 -> payed
-- https://docs.npmjs.com/cli/v6/using-npm/semver
 - https://semver.org/
 - https://semver.npmjs.com/
 - https://github.com/maxgherman/node-training

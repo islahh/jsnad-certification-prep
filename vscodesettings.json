@@ -1,0 +1,15 @@
+// place it in the end of your settings.json -- it will help you to study without autocomplete and etc...
+// to simulate JSNAD environment (use Node.JS docs when needed)
+
+"editor.quickSuggestions": {
+  "other": false,
+  "comments": false,
+  "strings": false
+},
+"editor.inlineSuggest.enabled": false,
+"editor.suggestOnTriggerCharacters": false,
+"editor.hover.enabled": false,
+"editor.parameterHints.enabled": false,
+"editor.wordBasedSuggestions": false,
+"editor.suggest.snippetsPreventQuickSuggestions": false,
+"editor.acceptSuggestionOnEnter": "off"
