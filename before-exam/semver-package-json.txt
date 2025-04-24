@@ -1,0 +1,60 @@
+
+🧪 Mini Quiz — SemVer for JSNAD
+
+1️⃣ What version will be installed with the command:
+```bash
+npm install lib@^2.3.1
+```
+a) Any version greater than 2.3.1
+b) Only 2.3.1
+c) Versions >=2.3.1 and <3.0.0
+d) Versions >=2.3.1 and <2.4.0
+
+--- C
+
+2️⃣ What does `~1.4.2` allow?
+
+a) Only 1.4.2
+b) Versions >=1.4.2 and <2.0.0
+c) Versions >=1.4.2 and <1.5.0
+d) Any version
+
+--- C
+
+3️⃣ Given this part of a `package.json`:
+```json
+"dependencies": {
+  "lodash": "^4.17.15"
+}
+```
+And the `npm outdated` command returns:
+```
+Package  Current   Wanted    Latest
+lodash   4.17.15   4.17.21   5.0.0
+```
+Which command will update to version 5?
+
+a) `npm update lodash`
+b) `npm install lodash@latest`
+c) `npm install lodash@^4.17.15`
+d) `npm update`
+
+--- B (because npm update will update only to the "wanted" version)
+
+4️⃣ What does each part of `2.5.3` mean?
+
+a) 2 = PATCH, 5 = MINOR, 3 = MAJOR
+b) 2 = MAJOR, 5 = MINOR, 3 = PATCH
+c) 2 = MINOR, 5 = PATCH, 3 = MAJOR
+d) This is not a valid semver version
+
+--- B
+
+5️⃣ Which command installs **any version** of the package?
+
+a) `npm install lib@*`
+b) `npm install lib@latest`
+c) `npm install lib@^0.0.1`
+d) `npm install lib@0.0.0`
+
+--- A
