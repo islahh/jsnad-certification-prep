@@ -39,6 +39,9 @@
         });
         r.pipe(process.stdout);
         ```
+      - we can also pause a readable stream with `myReadable.pause()`
+      - and return with `myReadable.resume()`
+      - when you do a `pipe`, or `on('data')` it automatically is "unpaused"
 
     - Writable
 
@@ -87,6 +90,10 @@
           transform(chunk, enconding, cb) {
             cb(null, chunk.toString().toUpperCase());
           },
+          flush(cb) { // runs only once in the end
+            // this.push(datahere) it send the data to the next pipe
+            return cb()
+          }
         });
         process.stdin.pipe(t).pipe(process.stdout);
         ```
