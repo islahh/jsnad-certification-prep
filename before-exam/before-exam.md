@@ -2,9 +2,10 @@
 
 - 1st - Complete the quizzes: https://courses.dwf.dev/docs/javascript/jsnad-course-notes#quizzes
   - there are some answers in the site wrong (but you can check the Node.JS docs for answers)
-- 2nd - Read the summary at the end of this file
+- 2nd - Read the summaries at this file
 - 3rd - Review exercises you've solved yourself
 - 4th - Focus on the topics with the highest weight in the exam and review related exercises
+  - Remember, don't waste your time on hard questions at the start of the exam.
 
 ## "Quick Summary"
 
@@ -145,7 +146,7 @@
 
   - exec: To exec shell commands (not safe)
 
-    ```
+    ```js
     const { exec, execFile } = require("node:child_process");
     const userInput = `test && echo "hello" && node -e "console.error('test error')" `;
     exec(`echo ${userInput}`, (err, stdout, stderr) => {
@@ -163,14 +164,12 @@
 
   - Spawn: To spawn a process (securely) - we can pass env variables, etc..
     - `const subprocess = spawn(process.execPath, ['-e', 'console.log('testing')], { env: { VARIABLE_HERE: true }, stdio: [ignore, inherit, pipe] } )'`
-      ```
       - `pipe`: **Redirects** the child's output/input to a stream you
       can **access from the parent** (e.g., for reading or writing).
       - `inherit`: **Shares** the **parent's stdio**
       (stdin, stdout, stderr) **with the child process** (same terminal).
       - `ignore`: **Disables** the **stdio stream for the child process**;
       it **won’t read or write anything**.
-      ```
     - `subprocess.stdout.pipe(process.stdout); // send subprocess stdout to process output`
     - `subprocess.stderr.pipe(process.stderr);`
   - FORK: The best to run node files
@@ -186,7 +185,7 @@
     const prefixedHello = prefixed('hello'); prefixedHello('joao')
 - [x] Module system — 7%
 - [x] Diagnostics — 6% (debugging)
-  - `node —inspect-brk app.js` —> runs stopping on first line - after just oppen chrome://inspect
+  - `node -—inspect-brk app.js` —> runs stopping on first line - after just oppen chrome://inspect
   - `debugger;` (breakpoint on code)
 - [x] Process/Operating System — 6%
 

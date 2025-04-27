@@ -25,7 +25,7 @@
 
 ## Preload Modules
 
-- It's a good idea if you have a module that configures the process or setup. A great example is the [.env](https://www.npmjs.com/package/dotenv) module.
+- It's a good idea if you have a module that configures the process or setup. A great example is the [.env](https://www.npmjs.com/package/dotenv) module. (not needed anymore - but useful for old versions - since we have native envs)
 
 - CommonJS
   - `node --require ./setup.js index.js` or `node -r ...`
