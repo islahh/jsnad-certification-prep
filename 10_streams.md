@@ -212,6 +212,77 @@ https://nodejs.org/dist/latest-v22.x/docs/api/stream.html
   readable.pipe(passThrough).pipe(process.stdout); // writable stream
   ```
 
+  ## Creating a Duplex stream
+
+  - A Duplex stream allows reading and writing independently.
+    - Think of it like a two-way tunnel where you can send and receive data separately.
+  - Duplex streams are useful when you need to both consume and produce data at the same time.
+
+  - Notice that this is only an example; and not a good usecase for streams
+  - Streams should be used to handle large amounts of data chunk by chunk, using it for small datasets is not recommended.
+
+  ```javascript
+  const { Duplex } = require("stream");
+
+  // Fake database that returns rows over time
+  class FakeDatabase {
+    constructor() {
+      this.rows = [
+        { id: 1, name: "Alice" },
+        { id: 2, name: "Bob" },
+        { id: 3, name: "Charlie" },
+        { id: 4, name: "Diana" },
+      ];
+    }
+
+    // Simulate async fetching a row from the database
+    fetchNextRow() {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(this.rows.shift() || null); // null when finished
+        }, 500); // simulate 500ms delay per row
+      });
+    }
+  }
+
+  // Create the Duplex stream
+  class DatabaseDuplexStream extends Duplex {
+    constructor(database) {
+      super({ objectMode: true }); // Important: objectMode=true for objects!
+      this.database = database;
+    }
+
+    // Writable side (optional for this example)
+    _write(chunk, encoding, callback) {
+      // read about _write and _writev
+      console.log(`Received on writable side:`, chunk);
+      callback();
+    }
+
+    // Readable side
+    async _read(size) {
+      // https://nodejs.org/docs/latest-v22.x/api/stream.html#readable_readsize
+      const row = await this.database.fetchNextRow();
+      if (row) {
+        this.push(row); // push one row at a time
+      } else {
+        this.push(null); // no more rows, read ends
+      }
+    }
+  }
+
+  // Usage
+  const fakeDB = new FakeDatabase();
+  const dbStream = new DatabaseDuplexStream(fakeDB);
+
+  dbStream.on("data", (row) => {
+    console.log("Streamed row:", row);
+  });
+
+  // here we could use a logic with event 'drain' to avoid backpressure
+  dbStream.write({ message: "This is a writable input" });
+  ```
+
 ## Determine end of stream
 
 - We have 4 ways to make a stream inoperative.
@@ -333,3 +404,59 @@ https://nodejs.org/dist/latest-v22.x/docs/api/stream.html
 ## Working with streams with async/await
 
 - Import from module `node:stream/promises`.
+
+## Backpressure - Important to work with streams
+
+- Backpressure occurs when a system is **overwhelmed by producing data faster than it can be consumed**, which could lead to memory issues, performance degradation, or even system crashes. In JavaScript, especially when dealing with streams (such as reading from or writing to files, or handling HTTP requests), backpressure management is crucial to ensure data flows smoothly and efficiently.
+
+  ### Drain Event
+
+  - The 'drain' event is key to handling backpressure. When you `write` data to a stream and it **returns false**, it means the **stream is unable to process more data at that moment**, and the data is buffered internally.
+  - When the buffer `drains` and the stream is `ready to accept more data`, the **'drain' event is emitted**. You should wait for this event before writing more data to the stream, ensuring you **don’t overwhelm the system**.
+
+  ```js
+  const writable = getWritableStreamSomewhere();
+
+  // Example of managing backpressure
+  if (!writable.write("some data")) {
+    writable.once("drain", () => {
+      // Once 'drain' is emitted, it’s safe to write more
+      writable.write("more data");
+    });
+  }
+  ```
+
+  ### Pipe Automatically Handles Backpressure
+
+  - When using the `pipe()` method, Node.js **automatically handles backpressure**. The pipe() method connects a readable stream to a writable stream and automatically manages the flow of data, ensuring that the writable stream isn't overwhelmed.
+
+  ```js
+  const { createReadStream } = require("fs");
+  const { createWriteStream } = require("stream");
+
+  const readable = createReadStream("largeFile.txt");
+  const writable = createWriteStream("output.txt");
+
+  readable.pipe(writable); // Backpressure is automatically managed here.
+  ```
+
+  ### Manually Handling Backpressure
+
+  - While pipe() handles backpressure automatically, you can manage backpressure manually when you need more control over the flow of data.
+  - If `stream.write` returns false you need to wait the `drain` event to continue writing again.
+  - The example above is from Node.js docs.
+
+  ```js
+  function write(data, cb) {
+    if (!stream.write(data)) {
+      stream.once("drain", cb);
+    } else {
+      process.nextTick(cb);
+    }
+  }
+
+  // Wait for cb to be called before doing any other write.
+  write("hello", () => {
+    console.log("Write completed, do more writes now.");
+  });
+  ```
