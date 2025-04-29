@@ -35,7 +35,7 @@
         const r = new Readable({
           read() {
             this.push("hi\n");
-            this.push(null);
+            this.push(null); // this emits 'end' event
           },
         });
         r.pipe(process.stdout);
@@ -43,6 +43,8 @@
       - we can also pause a readable stream with `myReadable.pause()`
       - and return with `myReadable.resume()`
       - when you do a `pipe`, or `on('data')` it automatically is "unpaused"
+      - `this.push(null);` -> this ends a readable string, inside the read func. (emits `end` event).
+      - `this.destroy();` -> this ends **a stream**, inside the write/read func. (emits `close` event)
 
     - Writable
 
@@ -59,6 +61,7 @@
         });
         w.write("hey\n");
         ```
+        - `this.destroy();` -> this ends **a stream**, inside the write/read func. (emits `close` event)
 
     - Duplex
 
@@ -93,8 +96,8 @@
           },
           flush(cb) { // runs only once in the end
             // this.push(datahere) it send the data to the next pipe
-            return cb()
-          }
+            return cb();
+          },
         });
         process.stdin.pipe(t).pipe(process.stdout);
         ```
@@ -158,18 +161,21 @@
     });
 
     // execFile is safer:
-    execFile(process.execPath, ["-e", "console.log('hello')"],
-    (err, stdout) => {})
+    execFile(
+      process.execPath,
+      ["-e", "console.log('hello')"],
+      (err, stdout) => {}
+    );
     ```
 
   - Spawn: To spawn a process (securely) - we can pass env variables, etc..
     - `const subprocess = spawn(process.execPath, ['-e', 'console.log('testing')], { env: { VARIABLE_HERE: true }, stdio: [ignore, inherit, pipe] } )'`
       - `pipe`: **Redirects** the child's output/input to a stream you
-      can **access from the parent** (e.g., for reading or writing).
+        can **access from the parent** (e.g., for reading or writing).
       - `inherit`: **Shares** the **parent's stdio**
-      (stdin, stdout, stderr) **with the child process** (same terminal).
+        (stdin, stdout, stderr) **with the child process** (same terminal).
       - `ignore`: **Disables** the **stdio stream for the child process**;
-      it **won’t read or write anything**.
+        it **won’t read or write anything**.
     - `subprocess.stdout.pipe(process.stdout); // send subprocess stdout to process output`
     - `subprocess.stderr.pipe(process.stderr);`
   - FORK: The best to run node files
@@ -183,6 +189,31 @@
   - closure state, this, scope, etc..
   - function prefixed(prefix) { return function(name) { console.log(prefix + name) } }
     const prefixedHello = prefixed('hello'); prefixedHello('joao')
+  - Prototype Ways to work with on js
+    ```js
+    // Object.create(obj, obj2) // creates a new object with obj as its prototype and adds properties from obj2 to the new object.
+    const animal = {
+      makeSound: () => {
+        console.log("animal sound");
+      },
+    };
+    const objWithRoar = {
+      roar: { // property name
+        value: () => { // value of this property
+          console.log("roar!!");
+        },
+      },
+      name: { value: "testing name" }
+    }
+    const lion = Object.create(animal, objWithRoar);
+
+    console.log('Object.getPrototypeOf(lion) == animal', Object.getPrototypeOf(lion) == animal) // true
+    console.log('Object.getPrototypeOf(lion) == objWithRoar', Object.getPrototypeOf(lion) == objWithRoar) // false
+
+    lion.makeSound() // animal sound
+    lion.roar() // roar!!
+    console.log(lion.name) // testing name
+    ```
 - [x] Module system — 7%
 - [x] Diagnostics — 6% (debugging)
   - `node -—inspect-brk app.js` —> runs stopping on first line - after just oppen chrome://inspect
