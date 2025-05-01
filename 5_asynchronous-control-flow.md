@@ -191,3 +191,32 @@ const fetchPromise = fetchData(signal);
 setTimeout(() => abortController.abort(), 10); // Abort the request after 10ms
 await fetchPromise;
 ```
+
+- **Using `AbortController` and `AbortSignal` to abort an custom Promise.**
+
+```javascript
+const abortController = new AbortController();
+const { signal } = abortController;
+
+function fetchData(signalInput) {
+  return new Promise((resolve, reject) => {
+    const myTimeoutId = setTimeout(() => {
+      resolve({ aborted: false });
+    }, 500);
+
+    signalInput.addEventListener("abort", () => {
+      clearTimeout(myTimeoutId);
+      reject({ aborted: true });
+    });
+  });
+}
+
+setTimeout(() => abortController.abort(), 100); // Abort early (before timeout)
+
+try {
+  const res = await fetchData(signal);
+  console.log("res", res);
+} catch (error) {
+  console.error("on catch", error); // err { aborted: true }
+}
+```
