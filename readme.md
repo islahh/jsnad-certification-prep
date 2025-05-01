@@ -1,6 +1,25 @@
 This repository contains summaries of each topic I've studied for the JSNAD certification.
 
-## Contents:
+## 📚 Table of Contents
+
+1. [Node CLI Basics](1_node-cli.md)
+2. [Debugging](2_debug.md)
+3. [JavaScript Concepts](3_javascript-concepts.md)
+4. [Packages and Dependencies](4_packages-and-dependencies.md)
+5. [Asynchronous Control Flow](5_asynchronous-control-flow.md)
+6. [Module Systems](6_module-systems.md)
+7. [Node Event System](7_node-event-system.md)
+8. [Node Error Handling](8_node-error-handling.md)
+9. [Buffers](9_buffers.md)
+10. [Streams](10_streams.md)
+11. [File System](11_file-system.md)
+12. [Process & Operating System](12_process-operating-system.md)
+13. [Child Processes](13_child-processes.md)
+14. [Automated Tests](14_automated-tests.md)
+<!-- 15. [Essentials Recap](15_essentials.md) -->
+16. [JSNAD FAQs](99_jsnad-faqs.md)
+
+## Content references:
 
 - https://nodejs.org/docs/latest-v22.x/api/index.html
 - https://nodejs.org/en/learn
