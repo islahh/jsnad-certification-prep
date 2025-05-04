@@ -97,13 +97,9 @@
 // 7.2 Read the contents of greeting.txt asynchronously and log it.
 // const fs = require('fs')
 // const path = require('path')
-// fs.writeFile(path.resolve(__dirname, 'greeting.txt'), 'Hello, File System!', (err) => {
-//   if (err) {
-//     console.error('Error', err);
-//   } else {
-//     console.log('OK');
-//   }
-// });
+// fs.readFile(path.resolve(__dirname, 'greeting.txt'), (err, data) => {
+//   console.log('res', data.toString())
+// })
 
 // 7.3 Check if the file greeting.txt exists.
 // const fs = require('fs')

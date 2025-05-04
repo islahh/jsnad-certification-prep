@@ -110,7 +110,7 @@
         import { PassThrough } from "node:stream";
         const p = new PassThrough();
         p.on("data", (chunk) => console.log(">", chunk.toString()));
-        process.stdin.pipe(p).pipe(process.stdout);
+        process.stdin.pipe(p)
         ```
 
     - more
@@ -178,12 +178,86 @@
         it **won’t read or write anything**.
     - `subprocess.stdout.pipe(process.stdout); // send subprocess stdout to process output`
     - `subprocess.stderr.pipe(process.stderr);`
+    ```js
+      import { spawn } from 'node:child_process'
+      const cpSpawn = spawn('node', ['-e', `
+        import { PassThrough } from "node:stream";
+        const p = new PassThrough();
+        p.on("data", (chunk) => console.log(">", chunk.toString()));
+        process.stdin.pipe(p)
+        console.log(process.env.hello)
+      `], {
+        env: {
+          ...process.env,
+          hello: 'this is the env key'
+        }
+      })
+
+      // write on stdin and press return to see
+      process.stdin.on('data', (data) => {
+        cpSpawn.stdin.write(data.toString())
+      })
+
+      cpSpawn.stdout.pipe(process.stdout)
+      ```
   - FORK: The best to run node files
     - `const child = fork(nodeFilePath)`
     - `child.send({msg: "hello"})`
     - `child.on('message', (messageFromChild) => {})`
+       ```js
+      import { fork } from "node:child_process";
+
+      const IS_CHILD = process.send;
+      if (IS_CHILD) {
+        console.log("process.env.hello", process.env.hello);
+
+        process.on("message", (msg) => {
+          console.log("Child received:", msg);
+          process.send(`Hello, parent! I received: "${JSON.stringify(msg)}"`);
+        });
+      } else {
+        const cp = fork("index.js", [], {
+          env: { ...process.env, hello: "test" },
+        });
+        cp.send({ message: "testString" });
+
+        cp.on("message", (data) => {
+          console.log("data", data);
+          cp.disconnect(); // Close IPC channel
+          cp.kill(); // Kill the child process
+        });
+      }
+      ```
 
 - [x] File System — 8%
+  - Handling streams + fs
+    ```js
+    import fs, { createReadStream, createWriteStream } from 'node:fs'
+    import { Transform } from 'node:stream'
+
+    const bigFile = 'test.js'
+    function createBigFile(linesAmount) {
+      const ws = createWriteStream(bigFile);
+      for (let i = 0; i < linesAmount; i++) {
+        ws.write(`console.log('current line -->'+${i})\n`);
+      }
+    }
+
+    const res = fs.existsSync('bigFile.js')
+    if (!res) {
+      createBigFile(1e5)
+    }
+
+    const uppercaseTransform = new Transform({
+      transform(chunk, encoding, cb) {
+        return cb(null, chunk.toString().toUpperCase())
+      }
+    })
+
+    const rs = createReadStream(bigFile)
+    const ws = createWriteStream('test-uppercase.js')
+    rs.pipe(uppercaseTransform).pipe(ws)
+    ```
 - [x] Error Handling — 8%
 - [x] JavaScript Prerequisites — 7%
   - closure state, this, scope, etc..
@@ -226,6 +300,7 @@
   console.log(os.totalmem()); // TODO output total system memory
   console.log(process.memoryUsage().heapTotal); // TODO output total heap memory
 
+
   // Remember: HEAP is from the process, while system means OS
   // Operational System
   ```
@@ -244,6 +319,7 @@
   - `npm outdated` lists the outdated packages, wanted version and latest version
   - `npm update` update automatically to “wanted version”
   - `npm i lib@latest` update to the latest version
+  - `npm install --omit=dev` -> avoid installing dev dependencies
 - [x] Unit Testing — 6%
   - modules: `import assert from ‘node:assert’` & `import { test } from 'node:test'`
   - General
@@ -253,7 +329,8 @@
     - `assert.doesNotThrow(() => add(5, 3))`
     - `assert.throws(() => add("123", "abc"), Error('input must be numbers')`
   - Handling async errors
-    - `assert.rejects(() => addAsync("abc", 5), Error('input must be numbers')`
+    - `assert.rejects(() => addAsync("abc", 5), Error('input must be numbers'))`
+    - `assert.rejects(() => addAsync("abc", 5), /input must be numbers/)` -> if rejects with a string we can pass a regexp
 - [x] Node.js CLI — 4%
   - `node -e "console.log('hello')"` → to run code
   - `node -p "console.log('hello')"` → to run code and print return
@@ -262,3 +339,4 @@
   - `node --require ./setup.js app.js` —> preload CJS modules
   - `node -h` —> to see CLI help commands
     - use grep to filter: `node -h | grep “preload”`
+  - `MODE="test" node app.js` -> send .env variables
