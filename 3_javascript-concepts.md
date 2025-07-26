@@ -164,6 +164,26 @@ Object.getPrototypeOf(Lion.prototype) === Animal.prototype; // true
 Object.getPrototypeOf(Cat) === Lion.prototype; // false because Cat is a function and not an object extended from Lion
 ```
 
+Let's take a look at the Wolf class:
+```javascript
+class Wolf {
+  constructor (name) {
+    this.name = name
+  }
+  howl () { console.log(this.name + ': awoooooooo') }
+}
+
+This is desugared to:
+
+function Wolf (name) {
+  this.name = name
+}
+
+Wolf.prototype.howl = function () {
+ console.log(this.name + ': awoooooooo')
+}
+```
+
 ## Closure Scope
 
 - Functions have a scope, meaning the variables created within a function are accessible locally and not outside of it.
