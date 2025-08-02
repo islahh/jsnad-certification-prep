@@ -1,6 +1,8 @@
 https://nodejs.org/dist/v22.12.0/docs/api/assert.html
 https://nodejs.org/dist/v22.12.0/docs/api/test.html
 
+REFER TO # PRACTICE TEST ON PLAY NOTES
+
 # Automated tests on Node.js
 
 - Automated tests are the extremenly important for any application, if an application hasn't been automated tested it shouldn't be considered production ready.
